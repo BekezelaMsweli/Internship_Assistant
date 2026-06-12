@@ -42,7 +42,7 @@ with st.sidebar:
     **Version:** 1.0
 
     **Developed by:**  
-    Bekezela Bongumusa Msweli
+    Bekezela Msweli
     """)
 
 st.title("🤖 Internship Knowledge Assistant")
