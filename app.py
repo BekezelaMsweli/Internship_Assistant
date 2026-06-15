@@ -10,6 +10,9 @@ st.set_page_config(
 
 faq = pd.read_csv("data/faq.csv", sep=";")
 
+# Chat History
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
 st.markdown("""
 <style>
@@ -44,6 +47,12 @@ with st.sidebar:
     **Developed by:**  
     Bekezela Msweli
     """)
+    
+    st.divider()
+
+    if st.button("🗑️ Clear Chat"):
+        st.session_state.messages = []
+        st.rerun()
 
 st.title("🤖 Internship Knowledge Assistant")
 
@@ -51,14 +60,27 @@ st.info(
     "Ask questions about internship procedures, ICT support, HR processes, and office guidelines."
 )
 
-question = st.text_input(
-    "💬 Ask a Question:",
-    placeholder="Example: How do I apply for leave?"
+for message in st.session_state.messages:
+
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+        
+question = st.chat_input(
+    "💬 Ask a Question...",
 )
 
 # Search FAQ
 if question:
+    st.session_state.messages.append(
+        {
+            "role": "user",
+            "content": question
+        }
+    )
 
+    with st.chat_message("user"):
+        st.markdown(question)
+        
     questions = faq["Question"].tolist()
 
     match = get_close_matches(
@@ -75,16 +97,30 @@ if question:
             "Answer"
         ].values[0]
 
-        st.success("Answer Found")
+        with st.chat_message("assistant"):
+            st.markdown(answer)
 
-        st.markdown(f"""
-        ### ✅ Answer
-
-        {answer}
-        """)
+        st.session_state.messages.append(
+          {
+            "role": "assistant",
+            "content": answer
+           }
+        )
+    
+        
 
     else:
+        answer = (
+            "I couldn't find an answer. "
+            "Please consult your supervisor."
+        )
 
-        st.warning(
-            "I couldn't find an answer. Please consult your supervisor."
+        with st.chat_message("assistant"):
+            st.markdown(answer)
+
+        st.session_state.messages.append(
+            {
+                "role": "assistant",
+                "content": answer
+            }
         )
