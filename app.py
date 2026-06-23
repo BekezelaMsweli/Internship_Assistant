@@ -3,7 +3,7 @@ import pandas as pd
 from difflib import get_close_matches
 
 st.set_page_config(
-    page_title="Internship Knowledge Assistant",
+    page_title="Interns Knowledge Assistant",
     page_icon="🤖",
     layout="wide"
 )
@@ -54,7 +54,7 @@ with st.sidebar:
         st.session_state.messages = []
         st.rerun()
 
-st.title("🤖 Internship Knowledge Assistant")
+st.title("🤖 Interns Knowledge Assistant")
 
 st.info(
     "Ask questions about internship procedures, ICT support, HR processes, and office guidelines."
